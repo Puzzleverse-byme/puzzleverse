@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Word Chain – PuzzleVerse</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07070F;--surface:#10101E;--card:#16162A;--border:#2A2A4A;--purple:#7C3AED;--pg:#9D5BF5;--cyan:#00E5FF;--yellow:#FFD600;--green:#00E676;--pink:#FF4081;--text:#E8E8FF;--muted:#6868A0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;-webkit-tap-highlight-color:transparent}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(124,58,237,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.06) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;width:100%;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(7,7,15,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.1rem;color:var(--cyan);letter-spacing:2px;text-decoration:none}
+.nav-logo span{color:var(--pg)}
+.nav-back{background:rgba(124,58,237,0.15);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 16px;font-size:0.82rem;cursor:pointer}
+.wrap{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:100px 16px 60px}
+.game-label{font-size:0.72rem;font-weight:700;color:var(--pg);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;text-align:center}
+.game-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,6vw,2.4rem);font-weight:900;text-align:center;margin-bottom:6px}
+.game-sub{color:var(--muted);font-size:0.88rem;text-align:center;margin-bottom:24px}
+.stats-bar{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+.stat-chip{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 18px;text-align:center;min-width:80px}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;color:var(--cyan)}
+.stat-lbl{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.timer-wrap{margin-bottom:20px}
+.timer-bg{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:99px;transition:width 1s linear}
+.timer-fill.urgent{background:linear-gradient(90deg,var(--pink),#ff1744)}
+.chain-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.chain-label{font-size:0.72rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.chain-words{display:flex;flex-wrap:wrap;gap:8px;min-height:40px}
+.chain-word{background:rgba(124,58,237,0.15);border:1px solid var(--purple);border-radius:8px;padding:6px 12px;font-family:'Orbitron',sans-serif;font-size:0.8rem;color:var(--pg)}
+.target-box{background:var(--card);border:2px solid var(--cyan);border-radius:16px;padding:20px;margin-bottom:16px;text-align:center}
+.target-row{display:flex;justify-content:space-around;align-items:center;gap:16px}
+.word-display{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,5vw,2rem);font-weight:900;letter-spacing:4px}
+.word-start{color:var(--pink)}
+.word-end{color:var(--green)}
+.arrow{color:var(--muted);font-size:1.5rem}
+.input-row{display:flex;gap:10px;margin-bottom:16px}
+#word-input{flex:1;background:var(--card);border:2px solid var(--border);border-radius:12px;padding:14px 18px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;outline:none}
+#word-input:focus{border-color:var(--purple)}
+.submit-btn{background:linear-gradient(135deg,var(--purple),#5B21B6);color:#fff;border:none;border-radius:12px;padding:14px 20px;font-size:1rem;font-weight:600;cursor:pointer;white-space:nowrap}
+.submit-btn:active{opacity:0.8}
+#msg{text-align:center;font-size:0.88rem;min-height:24px;margin-bottom:12px;font-weight:600}
+.rules-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.82rem;color:var(--muted);line-height:1.8}
+.btn-primary{background:linear-gradient(135deg,var(--purple),#5B21B6);color:#fff;border:none;border-radius:10px;padding:13px 28px;font-size:0.95rem;font-weight:600;cursor:pointer;margin:6px}
+.btn-outline{background:transparent;color:var(--cyan);border:1.5px solid var(--cyan);border-radius:10px;padding:13px 28px;font-size:0.95rem;font-weight:600;cursor:pointer;margin:6px}
+#win-screen{display:none;position:fixed;inset:0;z-index:200;background:rgba(7,7,15,0.93);backdrop-filter:blur(10px);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:24px}
+#win-screen.show{display:flex}
+.win-emoji{font-size:3.5rem;margin-bottom:14px;animation:bounce 0.6s ease infinite alternate}
+@keyframes bounce{to{transform:translateY(-10px)}}
+.win-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,5vw,2rem);font-weight:900;color:var(--green);text-shadow:0 0 28px var(--green);margin-bottom:8px}
+.win-sub{color:var(--muted);margin-bottom:20px}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2750548018774327" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">Puzzle<span>Verse</span></a>
+  <button class="nav-back" onclick="window.location.href='index.html'">← Back</button>
+</nav>
+<div class="wrap">
+  <div class="game-label">Word Game</div>
+  <h1 class="game-title">🔤 Word Chain</h1>
+  <p class="game-sub">Change one letter at a time to reach the target word!</p>
+  <div class="stats-bar">
+    <div class="stat-chip"><div class="stat-val" id="s-score">0</div><div class="stat-lbl">Score</div></div>
+    <div class="stat-chip"><div class="stat-val" id="s-moves">0</div><div class="stat-lbl">Moves</div></div>
+    <div class="stat-chip"><div class="stat-val" id="s-level">1</div><div class="stat-lbl">Level</div></div>
+  </div>
+  <div class="target-box">
+    <div class="chain-label">Change START → END (one letter at a time)</div>
+    <div class="target-row">
+      <div><div style="font-size:0.7rem;color:var(--muted);margin-bottom:4px">START</div><div class="word-display word-start" id="start-word"></div></div>
+      <div class="arrow">→</div>
+      <div><div style="font-size:0.7rem;color:var(--muted);margin-bottom:4px">TARGET</div><div class="word-display word-end" id="end-word"></div></div>
+    </div>
+  </div>
+  <div class="chain-box">
+    <div class="chain-label">Your Chain</div>
+    <div class="chain-words" id="chain-words"></div>
+  </div>
+  <div id="msg"></div>
+  <div class="input-row">
+    <input id="word-input" maxlength="4" placeholder="TYPE" autocomplete="off" autocorrect="off" spellcheck="false"/>
+    <button class="submit-btn" onclick="submitWord()">→</button>
+  </div>
+  <div class="rules-box">
+    📖 <b style="color:var(--text)">Rules:</b> Change exactly ONE letter per step. Each word must be a real 4-letter word. Reach the target word to win!
+  </div>
+  <div style="text-align:center">
+    <button class="btn-primary" onclick="newPuzzle()">🔀 New Puzzle</button>
+    <button class="btn-outline" onclick="showHint()">💡 Hint</button>
+  </div>
+</div>
+<div id="win-screen">
+  <div class="win-emoji">🎉</div>
+  <div class="win-title">Word Found!</div>
+  <p class="win-sub" id="win-sub">Amazing chain!</p>
+  <button class="btn-primary" onclick="newPuzzle()">Next Puzzle →</button>
+  <button class="btn-outline" onclick="document.getElementById('win-screen').classList.remove('show')">View Chain</button>
+</div>
+<script>
+// Audio
+let audioCtx=null;
+function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function playTone(f,t,d,v=0.2,delay=0){try{const c=getCtx(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type=t;o.frequency.setValueAtTime(f,c.currentTime+delay);g.gain.setValueAtTime(v,c.currentTime+delay);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+delay+d);o.start(c.currentTime+delay);o.stop(c.currentTime+delay+d)}catch(e){}}
+function sfxGood(){playTone(523,'sine',0.08,0.2);playTone(659,'sine',0.08,0.2,0.09)}
+function sfxBad(){playTone(200,'sawtooth',0.1,0.2)}
+function sfxWin(){[523,659,784,1047].forEach((f,i)=>playTone(f,'sine',0.2,0.3,i*0.12))}
+
+// Word lists - 4 letter words
+const VALID_WORDS=new Set(['ABLE','ACID','AGED','ALSO','AREA','ARMY','AWAY','BABY','BACK','BAIL','BAKE','BALL','BAND','BANK','BASE','BATH','BEAD','BEAM','BEAN','BEAR','BEAT','BEEF','BEEN','BELL','BELT','BEST','BIRD','BITE','BLOW','BLUE','BOAT','BODY','BOIL','BOLD','BOLT','BONE','BOOK','BOOM','BORN','BOTH','BOWL','BURN','CAKE','CALL','CALM','CAME','CAMP','CARD','CARE','CASE','CASH','CAST','CAVE','CENT','CHAT','CHIP','CITY','CLAP','CLAY','CLIP','CLUB','COAL','COAT','CODE','COIN','COLD','COME','COOK','COOL','COPE','COPY','CORD','CORE','CORN','COST','COUP','CREW','CROP','CROW','CURE','CURL','CUTE','DAMP','DARE','DARK','DART','DATA','DATE','DAWN','DAYS','DEAD','DEAF','DEAL','DEAR','DEBT','DECK','DEED','DEEP','DEER','DENY','DESK','DIET','DIRT','DISK','DOLL','DONE','DOOR','DOSE','DOVE','DOWN','DRAW','DREW','DRIP','DROP','DRUM','DUAL','DULL','DUMP','DUSK','DUST','DUTY','EACH','EARN','EASE','EAST','EDGE','ELSE','EMIT','EVEN','EVER','EVIL','EXAM','FACE','FACT','FAIL','FAIR','FALL','FAME','FARM','FAST','FATE','FEEL','FEET','FILE','FILL','FILM','FIND','FINE','FIRE','FIRM','FISH','FIST','FLAG','FLAT','FLEW','FLIP','FLOW','FOAM','FOLD','FOND','FONT','FOOD','FOOL','FOOT','FORD','FORE','FORK','FORM','FORT','FOUL','FREE','FROM','FUEL','FULL','FUND','FUSE','GAIN','GAME','GANG','GAVE','GEAR','GENE','GIFT','GIRL','GIVE','GLAD','GLOW','GLUE','GOAL','GOAT','GOES','GOLD','GOLF','GONE','GOOD','GRAB','GRAY','GREW','GRIN','GRIP','GROW','GULF','GUST','HALF','HALL','HAND','HANG','HARD','HARM','HATE','HAVE','HEAD','HEAL','HEAP','HEAT','HEEL','HELD','HELP','HERE','HERO','HIGH','HIKE','HILL','HINT','HIRE','HOLE','HOME','HOOD','HOOK','HOPE','HORN','HOST','HOUR','HUGE','HUNG','HUNT','HURT','IDEA','IDLE','INCH','INTO','IRON','ITEM','JOIN','JOKE','JUMP','JUST','KEEN','KEEP','KICK','KIND','KING','KNEE','KNEW','KNOW','LACK','LAID','LAKE','LAMP','LAND','LANE','LARK','LAST','LATE','LAWN','LEAD','LEAN','LEAP','LEFT','LEND','LESS','LICK','LIFE','LIFT','LIKE','LIME','LINE','LINK','LION','LIST','LIVE','LOAD','LOAN','LOCK','LOFT','LONE','LONG','LOOK','LOOP','LORD','LORE','LOSE','LOSS','LOST','LOUD','LOVE','LUCK','LUNG','MADE','MAIL','MAIN','MAKE','MALE','MALL','MARK','MART','MASK','MASS','MAST','MATE','MATH','MEAN','MEET','MELT','MENU','MERE','MESH','MICE','MILD','MILE','MILK','MILL','MIND','MINE','MINT','MISS','MIST','MODE','MOOD','MOON','MORE','MOST','MOVE','MUCH','MUST','NAIL','NAME','NAVY','NEAR','NECK','NEED','NEST','NEXT','NINE','NODE','NONE','NOON','NORM','NOSE','NOTE','NOUN','NUDE','NULL','OATH','OBEY','ODDS','OMIT','ONCE','ONLY','OPEN','ORAL','OVAL','OVEN','OVER','PACE','PACK','PAGE','PAID','PAIN','PAIR','PALE','PALM','PART','PASS','PAST','PATH','PAVE','PEAK','PEEL','PEER','PICK','PILE','PINE','PINK','PIPE','PLAN','PLAY','PLOT','PLOW','PLUM','PLUS','POEM','POET','POLE','POLL','POND','POOL','POOR','PORK','PORT','POSE','POST','POUR','PRAY','PREY','PULL','PUMP','PURE','PUSH','RACK','RAGE','RAID','RAIL','RAIN','RAKE','RAND','RANG','RANK','RARE','RATE','READ','REAL','REAP','REAR','RELY','RENT','REST','RICE','RICH','RIDE','RING','RISE','RISK','ROAD','ROAM','ROAR','ROBE','ROCK','RODE','ROLE','ROLL','ROOF','ROOM','ROOT','ROPE','ROSE','RUDE','RUIN','RULE','RUSH','RUST','SAFE','SAGE','SAIL','SAKE','SALE','SALT','SAME','SAND','SANE','SANG','SANK','SAVE','SEAL','SEAM','SEAT','SEED','SEEK','SEEM','SELF','SELL','SEND','SENT','SHED','SHIP','SHOP','SHOT','SHOW','SHUT','SIDE','SIGH','SILK','SING','SINK','SIZE','SKIP','SLAM','SLAP','SLIM','SLIP','SLOW','SNAP','SNOW','SOAK','SOAP','SOAR','SOCK','SOFT','SOIL','SOLE','SOME','SONG','SOON','SORE','SORT','SOUL','SOUP','SOUR','SPAN','SPIN','SPIT','SPOT','SPUR','STAR','STAY','STEM','STEP','STOP','STUB','SUCH','SUIT','SUNG','SUNK','SURE','SURF','SWIM','TAIL','TALE','TALL','TAME','TANK','TAPE','TASK','TEAR','TELL','TEND','TENT','TEST','TEXT','THAN','THAT','THEM','THEN','THEY','THIN','THIS','THUS','TIDE','TIED','TILE','TILL','TIME','TINY','TIRE','TOAD','TOLD','TOLL','TOMB','TONE','TOOK','TOOL','TORE','TORN','TOSS','TOUR','TOWN','TRAP','TREE','TRIM','TRIP','TRUE','TUBE','TUCK','TUNE','TURN','TWIN','TYPE','UGLY','UNIT','UPON','USED','USER','VAIN','VALE','VARY','VAST','VEIL','VERB','VERY','VEST','VIEW','VINE','VISA','VOID','VOLT','VOTE','WADE','WAGE','WAIT','WAKE','WALK','WALL','WAND','WANT','WARD','WARM','WARN','WARY','WASH','WAVE','WAYS','WEAK','WEAL','WEAR','WEED','WEEK','WELL','WENT','WERE','WEST','WHAT','WHEN','WHOM','WIDE','WIFE','WILD','WILL','WIND','WINE','WING','WINK','WIRE','WISE','WISH','WITH','WOLF','WOOD','WORD','WORE','WORK','WORM','WORN','WRAP','WREN','YARD','YARN','YEAR','YELL','YOUR','ZONE']);
+
+const PUZZLES=[
+  {start:'COLD',end:'WARM',hint:'CORD→WORD→WARD'},
+  {start:'HATE',end:'LOVE',hint:'HAVE→CAVE→CAVE'},
+  {start:'DARK',end:'LIGHT',hint:'Try 4-letter path'},
+  {start:'FAST',end:'SLOW',hint:'LAST→LASH→LASH'},
+  {start:'HARD',end:'EASY',hint:'Think step by step'},
+  {start:'FIRE',end:'WATER',hint:'4-letter steps'},
+  {start:'LOST',end:'FIND',hint:'LOFT→LIFT→LINE'},
+  {start:'HAND',end:'FOOT',hint:'BAND→BOND→FOND'},
+  {start:'HEAD',end:'TAIL',hint:'HEAL→TEAL→TALL'},
+  {start:'LOVE',end:'HATE',hint:'LIVE→HIVE→HIDE'},
+  {start:'BALL',end:'GAME',hint:'TALL→TALE→TAME'},
+  {start:'LAMP',end:'GLOW',hint:'DAMP→DUMP→DUMP'},
+  {start:'MINE',end:'GOLD',hint:'PINE→PINE→...'},
+  {start:'SAIL',end:'SHIP',hint:'MAIL→MAIN→SHIN'},
+  {start:'BOLD',end:'WEAK',hint:'COLD→CORD→WORD'},
+];
+
+let currentPuzzle,chain=[],moves=0,score=0,level=1;
+
+function newPuzzle(){
+  currentPuzzle=PUZZLES[Math.floor(Math.random()*PUZZLES.length)];
+  chain=[currentPuzzle.start];
+  moves=0;
+  document.getElementById('start-word').textContent=currentPuzzle.start;
+  document.getElementById('end-word').textContent=currentPuzzle.end;
+  document.getElementById('s-moves').textContent=0;
+  document.getElementById('msg').textContent='';
+  document.getElementById('win-screen').classList.remove('show');
+  document.getElementById('word-input').value='';
+  renderChain();
+}
+
+function renderChain(){
+  const c=document.getElementById('chain-words');
+  c.innerHTML=chain.map(w=>`<div class="chain-word">${w}</div>`).join('<span style="color:var(--muted);align-self:center">→</span>');
+}
+
+function diffLetters(a,b){
+  if(a.length!==b.length)return-1;
+  let d=0;for(let i=0;i<a.length;i++)if(a[i]!==b[i])d++;
+  return d;
+}
+
+function submitWord(){
+  const inp=document.getElementById('word-input');
+  const word=inp.value.toUpperCase().trim();
+  const msg=document.getElementById('msg');
+  inp.value='';
+  if(word.length!==currentPuzzle.start.length){msg.innerHTML=`<span style="color:var(--pink)">❌ Must be ${currentPuzzle.start.length} letters!</span>`;sfxBad();return;}
+  if(!VALID_WORDS.has(word)){msg.innerHTML=`<span style="color:var(--pink)">❌ Not a valid word!</span>`;sfxBad();return;}
+  const last=chain[chain.length-1];
+  const diff=diffLetters(last,word);
+  if(diff!==1){msg.innerHTML=`<span style="color:var(--pink)">❌ Change exactly ONE letter!</span>`;sfxBad();return;}
+  if(chain.includes(word)){msg.innerHTML=`<span style="color:var(--pink)">❌ Already used!</span>`;sfxBad();return;}
+  chain.push(word);moves++;
+  document.getElementById('s-moves').textContent=moves;
+  sfxGood();
+  msg.innerHTML=`<span style="color:var(--green)">✅ Good move!</span>`;
+  renderChain();
+  if(word===currentPuzzle.end){
+    const earned=Math.max(50,200-moves*10);score+=earned;level++;
+    document.getElementById('s-score').textContent=score;
+    document.getElementById('s-level').textContent=level;
+    sfxWin();
+    setTimeout(()=>{
+      document.getElementById('win-sub').textContent=`${moves} moves! +${earned} points`;
+      document.getElementById('win-screen').classList.add('show');
+    },400);
+  }
+}
+
+function showHint(){
+  const msg=document.getElementById('msg');
+  msg.innerHTML=`<span style="color:var(--yellow)">💡 Hint: ${currentPuzzle.hint}</span>`;
+}
+
+document.getElementById('word-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitWord()});
+newPuzzle();
+</script>
+</body>
+</html>

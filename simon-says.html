@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Simon Says – PuzzleVerse</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07070F;--surface:#10101E;--card:#16162A;--border:#2A2A4A;--purple:#7C3AED;--pg:#9D5BF5;--cyan:#00E5FF;--yellow:#FFD600;--green:#00E676;--pink:#FF4081;--text:#E8E8FF;--muted:#6868A0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;-webkit-tap-highlight-color:transparent}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(124,58,237,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.06) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;width:100%;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(7,7,15,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.1rem;color:var(--cyan);letter-spacing:2px;text-decoration:none}
+.nav-logo span{color:var(--pg)}
+.nav-back{background:rgba(124,58,237,0.15);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 16px;font-size:0.82rem;cursor:pointer}
+.wrap{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:100px 16px 60px;text-align:center}
+.game-label{font-size:0.72rem;font-weight:700;color:var(--pg);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+.game-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,6vw,2.4rem);font-weight:900;margin-bottom:6px}
+.game-sub{color:var(--muted);font-size:0.88rem;margin-bottom:24px}
+.stats-bar{display:flex;gap:10px;justify-content:center;margin-bottom:28px;flex-wrap:wrap}
+.stat-chip{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 18px;min-width:80px}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;color:var(--cyan)}
+.stat-lbl{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.simon-board{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:340px;margin:0 auto 24px;aspect-ratio:1}
+.simon-btn{border-radius:20px;border:3px solid transparent;cursor:pointer;transition:filter 0.1s,transform 0.1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
+.simon-btn:active{transform:scale(0.95)}
+.simon-btn.lit{filter:brightness(1.8);transform:scale(0.97)}
+.simon-btn[data-i="0"]{background:linear-gradient(135deg,#c00,#f00);border-color:#ff4444}
+.simon-btn[data-i="1"]{background:linear-gradient(135deg,#00a,#00f);border-color:#4444ff}
+.simon-btn[data-i="2"]{background:linear-gradient(135deg,#0a0,#0f0);border-color:#44ff44}
+.simon-btn[data-i="3"]{background:linear-gradient(135deg,#aa0,#ff0);border-color:#ffff44}
+.simon-btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.15);opacity:0;border-radius:inherit}
+.simon-btn.lit::after{opacity:1}
+#status{font-family:'Orbitron',sans-serif;font-size:1rem;color:var(--muted);margin-bottom:20px;min-height:28px}
+.btn-primary{background:linear-gradient(135deg,var(--purple),#5B21B6);color:#fff;border:none;border-radius:10px;padding:14px 32px;font-size:1rem;font-weight:600;cursor:pointer;margin:6px}
+.btn-primary:active{opacity:0.8}
+#win-screen{display:none;position:fixed;inset:0;z-index:200;background:rgba(7,7,15,0.93);backdrop-filter:blur(10px);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:24px}
+#win-screen.show{display:flex}
+.win-emoji{font-size:3.5rem;margin-bottom:14px;animation:bounce 0.6s ease infinite alternate}
+@keyframes bounce{to{transform:translateY(-10px)}}
+.win-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,5vw,2rem);font-weight:900;color:var(--pink);text-shadow:0 0 28px var(--pink);margin-bottom:8px}
+.win-sub{color:var(--muted);margin-bottom:20px;font-size:0.95rem}
+.win-score{font-family:'Orbitron',sans-serif;font-size:2.5rem;font-weight:900;color:var(--cyan);margin:12px 0}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2750548018774327" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">Puzzle<span>Verse</span></a>
+  <button class="nav-back" onclick="window.location.href='index.html'">← Back</button>
+</nav>
+<div class="wrap">
+  <div class="game-label">Memory Game</div>
+  <h1 class="game-title">🌀 Simon Says</h1>
+  <p class="game-sub">Watch the pattern, then repeat it! Each round gets longer.</p>
+  <div class="stats-bar">
+    <div class="stat-chip"><div class="stat-val" id="s-level">0</div><div class="stat-lbl">Round</div></div>
+    <div class="stat-chip"><div class="stat-val" id="s-score">0</div><div class="stat-lbl">Score</div></div>
+    <div class="stat-chip"><div class="stat-val" id="s-best">--</div><div class="stat-lbl">Best</div></div>
+  </div>
+  <div class="simon-board">
+    <button class="simon-btn" data-i="0" onclick="playerPress(0)"></button>
+    <button class="simon-btn" data-i="1" onclick="playerPress(1)"></button>
+    <button class="simon-btn" data-i="2" onclick="playerPress(2)"></button>
+    <button class="simon-btn" data-i="3" onclick="playerPress(3)"></button>
+  </div>
+  <div id="status">Press Start to play!</div>
+  <button class="btn-primary" id="start-btn" onclick="startGame()">▶ Start Game</button>
+</div>
+<div id="win-screen">
+  <div class="win-emoji">💥</div>
+  <div class="win-title">Game Over!</div>
+  <p class="win-sub">You reached Round <span id="ws-round">0</span></p>
+  <div class="win-score" id="ws-score">0</div>
+  <p class="win-sub" id="ws-best"></p>
+  <button class="btn-primary" onclick="startGame()">🔄 Play Again</button>
+</div>
+<script>
+let audioCtx=null;
+function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function playFreq(f,d){try{const c=getCtx(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.setValueAtTime(f,c.currentTime);g.gain.setValueAtTime(0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.start(c.currentTime);o.stop(c.currentTime+d)}catch(e){}}
+const FREQS=[261,329,392,523]; // C E G C
+function sfxBtn(i){playFreq(FREQS[i],0.3)}
+function sfxWrong(){playFreq(100,0.5)}
+function sfxWin(){[523,659,784].forEach((f,i)=>setTimeout(()=>playFreq(f,0.2),i*150))}
+
+let sequence=[],playerSeq=[],round=0,score=0,best=null,gameOn=false,showing=false;
+
+function startGame(){
+  document.getElementById('start-btn').style.display='none';
+  document.getElementById('win-screen').classList.remove('show');
+  sequence=[];playerSeq=[];round=0;score=0;
+  document.getElementById('s-score').textContent=0;
+  gameOn=true;nextRound();
+}
+
+function nextRound(){
+  round++;playerSeq=[];
+  document.getElementById('s-level').textContent=round;
+  document.getElementById('status').textContent=`Round ${round} — Watch!`;
+  sequence.push(Math.floor(Math.random()*4));
+  setBtnsEnabled(false);
+  setTimeout(()=>showSequence(),600);
+}
+
+function showSequence(){
+  showing=true;
+  let i=0;
+  const speed=Math.max(300,700-round*30);
+  function next(){
+    if(i>=sequence.length){showing=false;setBtnsEnabled(true);document.getElementById('status').textContent='Your turn! Repeat the pattern.';return;}
+    const btn=document.querySelector(`.simon-btn[data-i="${sequence[i]}"]`);
+    sfxBtn(sequence[i]);
+    btn.classList.add('lit');
+    setTimeout(()=>{btn.classList.remove('lit');i++;setTimeout(next,speed*0.4)},speed*0.6);
+    i++;setTimeout(next,speed);
+  }
+  // restart properly
+  let j=0;
+  const interval=setInterval(()=>{
+    if(j>=sequence.length){clearInterval(interval);showing=false;setBtnsEnabled(true);document.getElementById('status').textContent='Your turn! 👇';return;}
+    const btn=document.querySelector(`.simon-btn[data-i="${sequence[j]}"]`);
+    sfxBtn(sequence[j]);btn.classList.add('lit');
+    setTimeout(()=>btn.classList.remove('lit'),speed*0.5);
+    j++;
+  },speed);
+}
+
+function playerPress(i){
+  if(!gameOn||showing)return;
+  const btn=document.querySelector(`.simon-btn[data-i="${i}"]`);
+  sfxBtn(i);btn.classList.add('lit');
+  setTimeout(()=>btn.classList.remove('lit'),150);
+  playerSeq.push(i);
+  const idx=playerSeq.length-1;
+  if(playerSeq[idx]!==sequence[idx]){
+    sfxWrong();gameOver();return;
+  }
+  if(playerSeq.length===sequence.length){
+    score+=round*10;
+    document.getElementById('s-score').textContent=score;
+    sfxWin();
+    document.getElementById('status').textContent='✅ Correct!';
+    setBtnsEnabled(false);
+    setTimeout(()=>nextRound(),1000);
+  }
+}
+
+function gameOver(){
+  gameOn=false;setBtnsEnabled(false);
+  const isNew=best===null||score>best;
+  if(isNew)best=score;
+  document.getElementById('s-best').textContent=best||'--';
+  document.getElementById('ws-round').textContent=round;
+  document.getElementById('ws-score').textContent=score;
+  document.getElementById('ws-best').textContent=isNew?'🏆 New Best Score!':'';
+  setTimeout(()=>{
+    document.getElementById('win-screen').classList.add('show');
+    document.getElementById('start-btn').style.display='inline-block';
+  },600);
+}
+
+function setBtnsEnabled(on){
+  document.querySelectorAll('.simon-btn').forEach(b=>b.style.pointerEvents=on?'auto':'none');
+}
+</script>
+</body>
+</html>

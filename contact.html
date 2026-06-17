@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us – PuzzleVerse</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2750548018774327" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07070F;--surface:#10101E;--card:#16162A;--border:#2A2A4A;--purple:#7C3AED;--pg:#9D5BF5;--cyan:#00E5FF;--yellow:#FFD600;--green:#00E676;--pink:#FF4081;--text:#E8E8FF;--muted:#6868A0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(124,58,237,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.05) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;width:100%;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(7,7,15,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.1rem;color:var(--cyan);letter-spacing:2px;text-decoration:none}
+.nav-logo span{color:var(--pg)}
+.nav-back{background:rgba(124,58,237,0.15);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 16px;font-size:0.82rem;cursor:pointer}
+.wrap{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:100px 20px 60px}
+.page-label{font-size:0.72rem;font-weight:700;color:var(--pg);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;text-align:center}
+.page-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.8rem,6vw,2.6rem);font-weight:900;margin-bottom:10px;text-align:center}
+.page-sub{color:var(--muted);font-size:0.92rem;text-align:center;margin-bottom:36px;line-height:1.7}
+.info-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:32px}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center}
+.info-icon{font-size:2rem;margin-bottom:8px}
+.info-title{font-family:'Orbitron',sans-serif;font-size:0.78rem;font-weight:700;color:var(--pg);margin-bottom:6px}
+.info-val{font-size:0.82rem;color:#B8B8D8}
+.form-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px}
+.form-title{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:20px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:0.78rem;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.form-input{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'Inter',sans-serif;font-size:0.92rem;outline:none;transition:border-color 0.2s}
+.form-input:focus{border-color:var(--purple)}
+textarea.form-input{resize:vertical;min-height:120px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:480px){.form-row{grid-template-columns:1fr}}
+.select-input{appearance:none;cursor:pointer}
+.submit-btn{width:100%;background:linear-gradient(135deg,var(--purple),#5B21B6);color:#fff;border:none;border-radius:10px;padding:15px;font-size:1rem;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity 0.2s}
+.submit-btn:active{opacity:0.85}
+#success-msg{display:none;background:rgba(0,230,118,0.1);border:1px solid var(--green);border-radius:12px;padding:16px;text-align:center;color:var(--green);font-weight:600;margin-top:16px}
+#success-msg.show{display:block}
+.faq-section{margin-top:36px}
+.faq-title{font-family:'Orbitron',sans-serif;font-size:0.9rem;font-weight:700;color:var(--pg);margin-bottom:16px;letter-spacing:1px}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:10px;cursor:pointer}
+.faq-q{font-weight:600;font-size:0.88rem;display:flex;justify-content:space-between;align-items:center}
+.faq-a{font-size:0.82rem;color:#B8B8D8;line-height:1.6;margin-top:10px;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-arrow{transition:transform 0.2s;color:var(--muted)}
+footer{position:relative;z-index:1;background:var(--surface);border-top:1px solid var(--border);padding:28px 20px;text-align:center;margin-top:48px}
+.footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.footer-links a{color:var(--muted);text-decoration:none;font-size:0.82rem}
+.footer-copy{font-size:0.72rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">Puzzle<span>Verse</span></a>
+  <button class="nav-back" onclick="window.location.href='index.html'">← Back</button>
+</nav>
+<div class="wrap">
+  <div class="page-label">Get in Touch</div>
+  <h1 class="page-title">Contact Us</h1>
+  <p class="page-sub">Have a question, suggestion, or found a bug? We'd love to hear from you! Fill out the form below and we'll get back to you.</p>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <div class="info-icon">📧</div>
+      <div class="info-title">Email</div>
+      <div class="info-val">sobiaman86@gmail.com</div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">⚡</div>
+      <div class="info-title">Response Time</div>
+      <div class="info-val">Within 24–48 hours</div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">🌍</div>
+      <div class="info-title">Available</div>
+      <div class="info-val">7 days a week</div>
+    </div>
+  </div>
+
+  <div class="form-box">
+    <div class="form-title">✉️ Send Us a Message</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" type="text" id="f-name" placeholder="John Doe">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="f-email" placeholder="you@email.com">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Subject</label>
+      <select class="form-input select-input" id="f-subject">
+        <option value="">Select a topic...</option>
+        <option>🐛 Bug Report</option>
+        <option>💡 Game Suggestion</option>
+        <option>💰 Advertising / Business</option>
+        <option>🤝 Partnership</option>
+        <option>❓ General Question</option>
+        <option>⭐ Feedback</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Message</label>
+      <textarea class="form-input" id="f-message" placeholder="Tell us what's on your mind..."></textarea>
+    </div>
+    <button class="submit-btn" onclick="submitForm()">📨 Send Message</button>
+    <div id="success-msg">✅ Message sent! We'll get back to you within 24–48 hours. Thank you!</div>
+  </div>
+
+  <div class="faq-section">
+    <div class="faq-title">❓ Frequently Asked Questions</div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Are all games free to play? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes! All games on PuzzleVerse are 100% free. No sign-up, no subscription, no hidden fees.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I play on my phone? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Absolutely! PuzzleVerse is fully optimized for mobile, tablet, and desktop devices.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">How do I report a bug? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Use the contact form above and select "Bug Report". Please describe the issue and which game it's in. We'll fix it ASAP!</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I suggest a new game? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes! We love hearing game ideas from our players. Select "Game Suggestion" in the form above and describe your idea.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">How can I advertise on PuzzleVerse? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">For advertising and business partnerships, select "Advertising / Business" in the contact form and we'll get back to you quickly.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 PuzzleVerse. All rights reserved.</div>
+</footer>
+
+<script>
+function submitForm(){
+  const name=document.getElementById('f-name').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const subject=document.getElementById('f-subject').value;
+  const message=document.getElementById('f-message').value.trim();
+  if(!name||!email||!subject||!message){alert('Please fill in all fields!');return;}
+  if(!email.includes('@')){alert('Please enter a valid email!');return;}
+  document.getElementById('success-msg').classList.add('show');
+  document.getElementById('f-name').value='';
+  document.getElementById('f-email').value='';
+  document.getElementById('f-subject').value='';
+  document.getElementById('f-message').value='';
+}
+function toggleFaq(el){el.classList.toggle('open')}
+</script>
+</body>
+</html>

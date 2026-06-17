@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PuzzleVerse – Train Your Brain</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2750548018774327" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #07070F;
+    --surface: #10101E;
+    --card: #16162A;
+    --border: #2A2A4A;
+    --purple: #7C3AED;
+    --purple-glow: #9D5BF5;
+    --cyan: #00E5FF;
+    --yellow: #FFD600;
+    --green: #00E676;
+    --pink: #FF4081;
+    --text: #E8E8FF;
+    --muted: #6868A0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.07) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(7,7,15,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900; font-size: 1.3rem;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px var(--cyan);
+  }
+  .nav-logo span { color: var(--purple-glow); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-cta {
+    background: var(--purple);
+    color: #fff; border: none; border-radius: 8px;
+    padding: 10px 22px; font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; letter-spacing: 1px;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover {
+    box-shadow: 0 0 24px var(--purple);
+    transform: translateY(-1px);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.4);
+    border-radius: 99px;
+    padding: 6px 16px;
+    font-size: 0.78rem; font-weight: 600;
+    color: var(--purple-glow);
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .hero-badge::before { content: '●'; color: var(--green); font-size: 0.6rem; }
+
+  .hero h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.6rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+  }
+  .hero h1 .line1 { color: var(--text); }
+  .hero h1 .line2 {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--cyan);
+    text-shadow: 0 0 60px rgba(0,229,255,0.3);
+  }
+
+  .hero p {
+    font-size: 1.1rem; color: var(--muted);
+    max-width: 520px; line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--purple), #5B21B6);
+    color: #fff; border: none; border-radius: 10px;
+    padding: 14px 32px; font-size: 1rem; font-weight: 600;
+    cursor: pointer; transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { box-shadow: 0 0 32px var(--purple); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--cyan); border: 1.5px solid var(--cyan);
+    border-radius: 10px; padding: 14px 32px;
+    font-size: 1rem; font-weight: 600;
+    cursor: pointer; transition: background 0.2s, box-shadow 0.2s;
+  }
+  .btn-outline:hover { background: rgba(0,229,255,0.08); box-shadow: 0 0 20px rgba(0,229,255,0.3); }
+
+  /* floating puzzle pieces */
+  .floaters {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+  }
+  .floater {
+    position: absolute;
+    font-size: 2.5rem;
+    opacity: 0.12;
+    animation: float linear infinite;
+  }
+  @keyframes float {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0.08; }
+    50%  { opacity: 0.18; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* stats bar */
+  .stats {
+    display: flex; gap: 48px; flex-wrap: wrap; justify-content: center;
+    margin-top: 64px;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem; font-weight: 700;
+    color: var(--cyan);
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ── SECTION SHARED ── */
+  section { position: relative; z-index: 1; padding: 96px 48px; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 700;
+    color: var(--purple-glow); letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    font-weight: 700; line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .section-sub { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 520px; }
+
+  /* ── FEATURED GAME (LIVE DEMO) ── */
+  .featured { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .featured-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+  }
+  .game-demo-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 0 60px rgba(124,58,237,0.15);
+  }
+  .game-demo-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .game-demo-title { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--cyan); }
+  .game-score {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem; color: var(--yellow);
+  }
+
+  /* SLIDING PUZZLE GAME */
+  #puzzle-board {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .tile {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, var(--purple), #5B21B6);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem; font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+    border: 2px solid rgba(255,255,255,0.1);
+  }
+  .tile:hover { transform: scale(0.96); box-shadow: 0 0 16px var(--purple); }
+  .tile.empty {
+    background: rgba(255,255,255,0.03);
+    border: 2px dashed var(--border);
+    cursor: default;
+  }
+  .tile.empty:hover { transform: none; box-shadow: none; }
+  .tile.win-tile { background: linear-gradient(135deg, var(--green), #00897B); }
+
+  .game-controls {
+    display: flex; gap: 10px; margin-top: 14px;
+  }
+  .ctrl-btn {
+    flex: 1; padding: 10px;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text);
+    font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .ctrl-btn:hover { background: rgba(124,58,237,0.35); }
+  #move-count { font-size: 0.82rem; color: var(--muted); margin-top: 10px; text-align: center; }
+
+  /* ── GAME CARDS GRID ── */
+  .games-section { max-width: 1100px; margin: 0 auto; }
+  .games-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 24px; margin-top: 48px;
+  }
+  .game-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .game-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    border-color: var(--purple);
+  }
+  .card-thumb {
+    height: 130px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem;
+    position: relative; overflow: hidden;
+  }
+  .card-thumb::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, var(--card));
+  }
+  .card-body { padding: 16px 18px 20px; }
+  .card-tag {
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    border-radius: 4px; padding: 3px 8px;
+    margin-bottom: 8px; display: inline-block;
+  }
+  .tag-logic   { background: rgba(0,229,255,0.12); color: var(--cyan); }
+  .tag-memory  { background: rgba(255,214,0,0.12);  color: var(--yellow); }
+  .tag-spatial { background: rgba(0,230,118,0.12);  color: var(--green); }
+  .tag-word    { background: rgba(255,64,129,0.12);  color: var(--pink); }
+
+  .card-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;
+  }
+  .card-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+  .card-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 14px;
+  }
+  .card-stars { color: var(--yellow); font-size: 0.8rem; }
+  .card-players { font-size: 0.75rem; color: var(--muted); }
+  .play-btn {
+    width: 100%; padding: 10px;
+    background: linear-gradient(135deg, var(--purple), #5B21B6);
+    border: none; border-radius: 8px;
+    color: #fff; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; margin-top: 12px;
+    transition: opacity 0.2s;
+  }
+  .play-btn:hover { opacity: 0.85; }
+
+  /* ── LEADERBOARD ── */
+  .leaderboard-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .lb-inner { max-width: 700px; margin: 0 auto; }
+  .lb-table { margin-top: 40px; display: flex; flex-direction: column; gap: 10px; }
+  .lb-row {
+    display: grid; grid-template-columns: 40px 1fr auto auto;
+    align-items: center; gap: 16px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 20px;
+    transition: border-color 0.2s;
+  }
+  .lb-row:hover { border-color: var(--purple); }
+  .lb-row.gold   { border-color: var(--yellow); box-shadow: 0 0 20px rgba(255,214,0,0.1); }
+  .lb-row.silver { border-color: #9E9E9E; }
+  .lb-row.bronze { border-color: #FF7043; }
+  .lb-rank { font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700; color: var(--muted); text-align: center; }
+  .lb-row.gold   .lb-rank { color: var(--yellow); }
+  .lb-row.silver .lb-rank { color: #E0E0E0; }
+  .lb-row.bronze .lb-rank { color: #FF7043; }
+  .lb-name { font-weight: 600; font-size: 0.95rem; }
+  .lb-game { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .lb-score {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem; font-weight: 700; color: var(--cyan);
+  }
+  .lb-badge {
+    font-size: 1.2rem;
+  }
+
+  /* ── CATEGORIES ── */
+  .cats { max-width: 1100px; margin: 0 auto; }
+  .cats-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px; margin-top: 40px;
+  }
+  .cat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 28px 20px;
+    text-align: center; cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .cat-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--purple);
+    box-shadow: 0 8px 32px rgba(124,58,237,0.2);
+  }
+  .cat-icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .cat-name { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
+  .cat-count { font-size: 0.78rem; color: var(--muted); }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 24px;
+  }
+  .footer-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900; font-size: 1.1rem;
+    color: var(--cyan);
+  }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+  /* ── WIN OVERLAY ── */
+  #win-overlay {
+    display: none;
+    position: absolute; inset: 0;
+    background: rgba(7,7,15,0.9);
+    border-radius: 20px;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 10;
+  }
+  #win-overlay.show { display: flex; }
+  #win-overlay h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem; color: var(--green);
+    text-shadow: 0 0 24px var(--green);
+    margin-bottom: 8px;
+  }
+  #win-overlay p { color: var(--muted); font-size: 0.9rem; margin-bottom: 20px; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    section { padding: 72px 20px; }
+    .featured-inner { grid-template-columns: 1fr; gap: 40px; }
+    footer { padding: 36px 20px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Puzzle<span>Verse</span></div>
+  <ul class="nav-links">
+    <li><a href="#games">Games</a></li>
+    <li><a href="#leaderboard">Leaderboard</a></li>
+    <li><a href="#categories">Categories</a></li>
+  </ul>
+  <button class="nav-cta" onclick="window.location.href='memory-game.html'">🃏 Play Memory</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="floaters" id="floaters"></div>
+
+  <div class="hero-badge">🧠 New puzzles daily</div>
+
+  <h1>
+    <div class="line1">Train Your</div>
+    <div class="line2">BRAIN</div>
+  </h1>
+  <p>The most addictive logic puzzles, riddles, and brain teasers — all in one place. Test your IQ and compete with players around the world.</p>
+
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">🎮 Start Playing</button>
+    <button class="btn-outline" onclick="document.getElementById('leaderboard').scrollIntoView({behavior:'smooth'})">🏆 Leaderboard</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">2.4M+</div>
+      <div class="stat-label">Players</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">150+</div>
+      <div class="stat-label">Puzzles</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50K</div>
+      <div class="stat-label">Daily Active</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4.9★</div>
+      <div class="stat-label">Rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE GAME DEMO -->
+<section class="featured" id="play">
+  <div class="featured-inner">
+    <div>
+      <div class="section-label">Live Demo</div>
+      <h2 class="section-title">Play Now —<br>Sliding Puzzle</h2>
+      <p class="section-sub" style="margin-bottom:24px;">Arrange numbers 1–8 in order. Click a tile next to the empty space to slide it. The fewer moves you use, the higher your score!</p>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
+        <li style="display:flex;gap:12px;align-items:center;font-size:0.9rem;color:var(--muted)"><span style="color:var(--cyan);font-size:1.1rem">🧩</span> Click a tile to slide it into the empty space</li>
+        <li style="display:flex;gap:12px;align-items:center;font-size:0.9rem;color:var(--muted)"><span style="color:var(--yellow);font-size:1.1rem">⚡</span> Fewer moves = Higher score</li>
+        <li style="display:flex;gap:12px;align-items:center;font-size:0.9rem;color:var(--muted)"><span style="color:var(--green);font-size:1.1rem">🏆</span> Your score gets added to the leaderboard</li>
+      </ul>
+    </div>
+
+    <div class="game-demo-wrap" style="position:relative">
+      <div id="win-overlay">
+        <h3>🎉 Puzzle Solved!</h3>
+        <p id="win-msg">Well done!</p>
+        <button class="btn-primary" onclick="initPuzzle()">Play Again</button>
+      </div>
+      <div class="game-demo-header">
+        <span class="game-demo-title">SLIDING PUZZLE</span>
+        <span class="game-score">⭐ <span id="score-display">0</span></span>
+      </div>
+      <div id="puzzle-board"></div>
+      <div id="move-count">Moves: <span id="moves">0</span></div>
+      <div class="game-controls">
+        <button class="ctrl-btn" onclick="initPuzzle()">🔀 Shuffle</button>
+        <button class="ctrl-btn" onclick="solveHint()">💡 Hint</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAME CARDS -->
+<section id="games">
+  <div class="games-section">
+    <div class="section-label">All Games</div>
+    <h2 class="section-title">Popular Puzzles</h2>
+    <p class="section-sub">Something for every level — from beginner to genius.</p>
+
+    <div class="games-grid">
+
+      <div class="game-card" onclick="window.location.href='sudoku.html'" style="cursor:pointer">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#1a0533,#3b0764)">🔢</div>
+        <div class="card-body">
+          <span class="card-tag tag-logic">Logic</span>
+          <div class="card-name">Sudoku Master</div>
+          <div class="card-desc">Classic 9×9 grid — fill every row, column and box with numbers 1 to 9.</div>
+          <div class="card-meta">
+            <span class="card-stars">★★★★★</span>
+            <span class="card-players">842K players</span>
+          </div>
+          <button class="play-btn" onclick="event.stopPropagation();window.location.href='sudoku.html'">▶ Play Now</button>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='word-chain.html'" style="cursor:pointer">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#0a1f1a,#064e3b)">🔤</div>
+        <div class="card-body">
+          <span class="card-tag tag-word">Word</span>
+          <div class="card-name">Word Chain</div>
+          <div class="card-desc">Change one letter at a time to get from one word to another — as fast as you can!</div>
+          <div class="card-meta">
+            <span class="card-stars">★★★★☆</span>
+            <span class="card-players">390K players</span>
+          </div>
+          <button class="play-btn" onclick="event.stopPropagation();window.location.href='word-chain.html'">▶ Play Now</button>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='memory-game.html'" style="cursor:pointer">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#1a1200,#713f12)">🃏</div>
+        <div class="card-body">
+          <span class="card-tag tag-memory">Memory</span>
+          <div class="card-name">Flip & Match</div>
+          <div class="card-desc">Flip cards and find matching pairs. Keep your memory sharp!</div>
+          <div class="card-meta">
+            <span class="card-stars">★★★★★</span>
+            <span class="card-players">1.1M players</span>
+          </div>
+          <button class="play-btn" onclick="window.location.href='memory-game.html'">▶ Play Now</button>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='color-flow.html'" style="cursor:pointer">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#0a0a2e,#1e3a5f)">🔵</div>
+        <div class="card-body">
+          <span class="card-tag tag-spatial">Spatial</span>
+          <div class="card-name">Color Flow</div>
+          <div class="card-desc">Connect matching colored dots with lines — without crossing any paths.</div>
+          <div class="card-meta">
+            <span class="card-stars">★★★★☆</span>
+            <span class="card-players">560K players</span>
+          </div>
+          <button class="play-btn" onclick="event.stopPropagation();window.location.href='color-flow.html'">▶ Play Now</button>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='word-scramble.html'" style="cursor:pointer">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#1a0a0a,#7f1d1d)">🔮</div>
+        <div class="card-body">
+          <span class="card-tag tag-logic">Logic</span>
+          <div class="card-name">Binary Puzzle</div>
+          <div class="card-desc">Fill the grid with 0s and 1s — no more than two consecutive same digits allowed!</div>
+          <div class="card-meta">
+            <span class="card-stars">★★★★★</span>
+            <span class="card-players">270K players</span>
+          </div>
+          <button class="play-btn" onclick="event.stopPropagation();window.location.href='block-fit.html'">▶ Play Now</button>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='math-storm.html'" style="cursor:pointer">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#0f1a0a,#14532d)">🧮</div>
+        <div class="card-body">
+          <span class="card-tag tag-logic">Logic</span>
+          <div class="card-name">Math Storm</div>
+          <div class="card-desc">Solve as many equations as you can in 60 seconds!</div>
+          <div class="card-meta">
+            <span class="card-stars">★★★★☆</span>
+            <span class="card-players">480K players</span>
+          </div>
+          <button class="play-btn" onclick="event.stopPropagation();window.location.href='math-storm.html'">▶ Play Now</button>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='word-scramble.html'" style="cursor:pointer">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#0d0a1f,#2e1065)">🎯</div>
+        <div class="card-body">
+          <span class="card-tag tag-spatial">Spatial</span>
+          <div class="card-name">Word Scramble</div>
+          <div class="card-desc">Tap scrambled letters in correct order to make the word!</div>
+          <div class="card-meta">
+            <span class="card-stars">★★★★★</span>
+            <span class="card-players">520K players</span>
+          </div>
+          <button class="play-btn" onclick="event.stopPropagation();window.location.href='block-fit.html'">▶ Play Now</button>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="window.location.href='simon-says.html'" style="cursor:pointer">
+        <div class="card-thumb" style="background:linear-gradient(135deg,#0a1a1f,#0c4a6e)">🌀</div>
+        <div class="card-body">
+          <span class="card-tag tag-memory">Memory</span>
+          <div class="card-name">Simon Says</div>
+          <div class="card-desc">Memorize light patterns and repeat them — the longer the sequence, the harder it gets!</div>
+          <div class="card-meta">
+            <span class="card-stars">★★★★☆</span>
+            <span class="card-players">310K players</span>
+          </div>
+          <button class="play-btn" onclick="event.stopPropagation();window.location.href='simon-says.html'">▶ Play Now</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LEADERBOARD -->
+<section class="leaderboard-section" id="leaderboard">
+  <div class="lb-inner">
+    <div class="section-label">Hall of Fame</div>
+    <h2 class="section-title">Top Players</h2>
+    <p class="section-sub">The fastest and smartest puzzle solvers this week!</p>
+
+    <div class="lb-table">
+      <div class="lb-row gold">
+        <div class="lb-rank">1</div>
+        <div><div class="lb-name">AaravX99</div><div class="lb-game">Sudoku Master</div></div>
+        <div class="lb-score">98,420</div>
+        <div class="lb-badge">🥇</div>
+      </div>
+      <div class="lb-row silver">
+        <div class="lb-rank">2</div>
+        <div><div class="lb-name">PriyaPuzzle</div><div class="lb-game">Color Flow</div></div>
+        <div class="lb-score">87,310</div>
+        <div class="lb-badge">🥈</div>
+      </div>
+      <div class="lb-row bronze">
+        <div class="lb-rank">3</div>
+        <div><div class="lb-name">BrainBuster_Z</div><div class="lb-game">Math Storm</div></div>
+        <div class="lb-score">76,900</div>
+        <div class="lb-badge">🥉</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">4</div>
+        <div><div class="lb-name">LogicKing</div><div class="lb-game">Binary Puzzle</div></div>
+        <div class="lb-score">65,200</div>
+        <div class="lb-badge">🎖️</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">5</div>
+        <div><div class="lb-name">ZeroToHero</div><div class="lb-game">Word Chain</div></div>
+        <div class="lb-score">58,750</div>
+        <div class="lb-badge">🎖️</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">6</div>
+        <div><div class="lb-name">MindBlaze</div><div class="lb-game">Word Scramble</div></div>
+        <div class="lb-score">51,300</div>
+        <div class="lb-badge">🎖️</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section id="categories">
+  <div class="cats">
+    <div class="section-label">Browse By Type</div>
+    <h2 class="section-title">Game Categories</h2>
+    <div class="cats-grid">
+      <div class="cat-card">
+        <div class="cat-icon">🧠</div>
+        <div class="cat-name">Logic</div>
+        <div class="cat-count">42 games</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🃏</div>
+        <div class="cat-name">Memory</div>
+        <div class="cat-count">28 games</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🔤</div>
+        <div class="cat-name">Word</div>
+        <div class="cat-count">35 games</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">📐</div>
+        <div class="cat-name">Spatial</div>
+        <div class="cat-count">22 games</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🔢</div>
+        <div class="cat-name">Numbers</div>
+        <div class="cat-count">19 games</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">⏱️</div>
+        <div class="cat-name">Speed</div>
+        <div class="cat-count">15 games</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">PuzzleVerse</div>
+  <div class="footer-links">
+    <a href="privacy.html">Privacy</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    
+  </div>
+  <div class="footer-copy">© 2026 PuzzleVerse. Made with 🧩</div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast" style="
+  position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(80px);
+  background:#16162A; border:1px solid #2A2A4A; border-radius:12px;
+  padding:14px 28px; font-size:0.9rem; color:#E8E8FF;
+  z-index:999; transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s;
+  opacity:0; pointer-events:none; white-space:nowrap;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+">🚧 Coming Soon — Stay tuned!</div>
+
+<script>
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg || '🚧 Coming Soon — Stay tuned!';
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  t.style.opacity = '1';
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => {
+    t.style.transform = 'translateX(-50%) translateY(80px)';
+    t.style.opacity = '0';
+  }, 2200);
+}
+</script>
+const emojis = ['🧩','🔢','🔤','🎯','🧠','⚡','🔮','🎲'];
+const floaters = document.getElementById('floaters');
+for (let i = 0; i < 18; i++) {
+  const el = document.createElement('div');
+  el.className = 'floater';
+  el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.top = Math.random() * 100 + 'vh';
+  el.style.fontSize = (1.5 + Math.random() * 2) + 'rem';
+  el.style.animationDuration = (8 + Math.random() * 14) + 's';
+  el.style.animationDelay = (Math.random() * 10) + 's';
+  floaters.appendChild(el);
+}
+
+/* ── SLIDING PUZZLE ── */
+let board = [], moves = 0, score = 0;
+const GOAL = [1,2,3,4,5,6,7,8,0];
+
+function initPuzzle() {
+  board = [...GOAL];
+  shuffle(board);
+  moves = 0;
+  document.getElementById('moves').textContent = 0;
+  document.getElementById('score-display').textContent = score;
+  document.getElementById('win-overlay').classList.remove('show');
+  renderBoard();
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  if (!isSolvable(arr)) [arr[0], arr[1]] = [arr[1], arr[0]];
+}
+
+function isSolvable(arr) {
+  let inv = 0;
+  for (let i = 0; i < 8; i++)
+    for (let j = i + 1; j < 9; j++)
+      if (arr[i] && arr[j] && arr[i] > arr[j]) inv++;
+  return inv % 2 === 0;
+}
+
+function renderBoard() {
+  const pb = document.getElementById('puzzle-board');
+  pb.innerHTML = '';
+  board.forEach((val, idx) => {
+    const tile = document.createElement('div');
+    tile.className = 'tile' + (val === 0 ? ' empty' : '');
+    tile.textContent = val || '';
+    if (val !== 0) tile.addEventListener('click', () => moveTile(idx));
+    pb.appendChild(tile);
+  });
+}
+
+function moveTile(idx) {
+  const empty = board.indexOf(0);
+  const valid = [idx-1, idx+1, idx-3, idx+3];
+  const rowIdx = Math.floor(idx/3), rowEmpty = Math.floor(empty/3);
+  if (
+    (idx === empty-1 && rowIdx === rowEmpty) ||
+    (idx === empty+1 && rowIdx === rowEmpty) ||
+    idx === empty-3 || idx === empty+3
+  ) {
+    [board[idx], board[empty]] = [board[empty], board[idx]];
+    moves++;
+    document.getElementById('moves').textContent = moves;
+    renderBoard();
+    if (board.join('') === GOAL.join('')) {
+      const earned = Math.max(100, 1000 - moves * 10);
+      score += earned;
+      document.getElementById('score-display').textContent = score;
+      document.getElementById('win-msg').textContent = `Solved in ${moves} moves! +${earned} points 🎉`;
+      document.getElementById('win-overlay').classList.add('show');
+    }
+  }
+}
+
+function solveHint() {
+  // find a valid move and flash it
+  const empty = board.indexOf(0);
+  const candidates = [];
+  const rowEmpty = Math.floor(empty/3);
+  if (empty-1 >= 0 && Math.floor((empty-1)/3) === rowEmpty) candidates.push(empty-1);
+  if (empty+1 < 9  && Math.floor((empty+1)/3) === rowEmpty) candidates.push(empty+1);
+  if (empty-3 >= 0) candidates.push(empty-3);
+  if (empty+3 < 9)  candidates.push(empty+3);
+  if (candidates.length) {
+    const pick = candidates[Math.floor(Math.random() * candidates.length)];
+    const tiles = document.querySelectorAll('.tile');
+    tiles[pick].style.boxShadow = '0 0 24px #00E5FF';
+    setTimeout(() => { tiles[pick].style.boxShadow = ''; }, 800);
+  }
+}
+
+initPuzzle();
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").then(()=>console.log("PWA Ready!"));}</script>
+</body>
+</html>

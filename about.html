@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us – PuzzleVerse</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07070F;--surface:#10101E;--card:#16162A;--border:#2A2A4A;--purple:#7C3AED;--pg:#9D5BF5;--cyan:#00E5FF;--yellow:#FFD600;--green:#00E676;--text:#E8E8FF;--muted:#6868A0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(124,58,237,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.05) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;width:100%;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(7,7,15,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.1rem;color:var(--cyan);letter-spacing:2px;text-decoration:none}
+.nav-logo span{color:var(--pg)}
+.nav-back{background:rgba(124,58,237,0.15);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 16px;font-size:0.82rem;cursor:pointer}
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:100px 20px 60px}
+.hero-section{text-align:center;margin-bottom:48px}
+.page-label{font-size:0.72rem;font-weight:700;color:var(--pg);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px}
+.page-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.8rem,6vw,2.8rem);font-weight:900;margin-bottom:16px}
+.page-title span{color:var(--cyan)}
+.page-sub{font-size:1rem;color:var(--muted);line-height:1.8;max-width:560px;margin:0 auto}
+.stats-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:36px 0}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 28px;text-align:center;min-width:110px}
+.stat-num{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:var(--cyan)}
+.stat-lbl{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.section{margin-bottom:32px}
+.section-title{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--pg);margin-bottom:16px;letter-spacing:1px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:14px}
+.card h3{font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.card p{font-size:0.88rem;color:#B8B8D8;line-height:1.7}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:32px}
+.game-pill{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;text-decoration:none;transition:border-color 0.2s}
+.game-pill:hover{border-color:var(--purple)}
+.game-pill-icon{font-size:1.4rem}
+.game-pill-name{font-family:'Orbitron',sans-serif;font-size:0.75rem;font-weight:700;color:var(--text)}
+.mission-box{background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(0,229,255,0.08));border:1px solid rgba(124,58,237,0.3);border-radius:16px;padding:28px;text-align:center;margin-bottom:32px}
+.mission-box h2{font-family:'Orbitron',sans-serif;font-size:1.2rem;color:var(--cyan);margin-bottom:12px}
+.mission-box p{font-size:0.92rem;color:#B8B8D8;line-height:1.8;max-width:520px;margin:0 auto}
+.btn-primary{display:inline-block;background:linear-gradient(135deg,var(--purple),#5B21B6);color:#fff;border:none;border-radius:10px;padding:13px 28px;font-size:0.95rem;font-weight:600;cursor:pointer;text-decoration:none;margin:6px}
+footer{position:relative;z-index:1;background:var(--surface);border-top:1px solid var(--border);padding:28px 20px;text-align:center}
+.footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.footer-links a{color:var(--muted);text-decoration:none;font-size:0.82rem}
+.footer-copy{font-size:0.72rem;color:var(--muted)}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2750548018774327" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">Puzzle<span>Verse</span></a>
+  <button class="nav-back" onclick="window.location.href='index.html'">← Back</button>
+</nav>
+<div class="wrap">
+  <div class="hero-section">
+    <div class="page-label">Our Story</div>
+    <h1 class="page-title">About <span>PuzzleVerse</span></h1>
+    <p class="page-sub">We believe everyone deserves a fun, free, and ad-light place to challenge their brain. PuzzleVerse was built with one goal — make the best puzzle games on the web, completely free.</p>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num">8+</div><div class="stat-lbl">Games</div></div>
+      <div class="stat-card"><div class="stat-num">2.4M</div><div class="stat-lbl">Players</div></div>
+      <div class="stat-card"><div class="stat-num">150+</div><div class="stat-lbl">Puzzles</div></div>
+      <div class="stat-card"><div class="stat-num">4.9★</div><div class="stat-lbl">Rating</div></div>
+    </div>
+  </div>
+
+  <div class="mission-box">
+    <h2>Our Mission</h2>
+    <p>To create the world's most enjoyable brain puzzle platform — where anyone, anywhere, can sharpen their mind for free. No downloads, no sign-ups, just pure fun.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🎮 Our Games</div>
+    <div class="games-grid">
+      <a class="game-pill" href="memory-game.html"><div class="game-pill-icon">🃏</div><div class="game-pill-name">Flip & Match</div></a>
+      <a class="game-pill" href="sudoku.html"><div class="game-pill-icon">🔢</div><div class="game-pill-name">Sudoku</div></a>
+      <a class="game-pill" href="math-storm.html"><div class="game-pill-icon">🧮</div><div class="game-pill-name">Math Storm</div></a>
+      <a class="game-pill" href="word-chain.html"><div class="game-pill-icon">🔤</div><div class="game-pill-name">Word Chain</div></a>
+      <a class="game-pill" href="simon-says.html"><div class="game-pill-icon">🌀</div><div class="game-pill-name">Simon Says</div></a>
+      <a class="game-pill" href="color-flow.html"><div class="game-pill-icon">🔵</div><div class="game-pill-name">Color Flow</div></a>
+      <a class="game-pill" href="block-fit.html"><div class="game-pill-icon">🎯</div><div class="game-pill-name">Block Fit</div></a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">💡 Why PuzzleVerse?</div>
+    <div class="card">
+      <h3>🆓 100% Free Forever</h3>
+      <p>All games on PuzzleVerse are completely free to play. No subscriptions, no pay-to-win, no hidden fees. Ever.</p>
+    </div>
+    <div class="card">
+      <h3>📱 Works on Any Device</h3>
+      <p>Whether you're on mobile, tablet, or desktop — PuzzleVerse works perfectly on every screen size.</p>
+    </div>
+    <div class="card">
+      <h3>🧠 Good for Your Brain</h3>
+      <p>Research shows that puzzle games improve memory, concentration, and problem-solving skills. Play daily and keep your mind sharp!</p>
+    </div>
+    <div class="card">
+      <h3>⚡ No Downloads Required</h3>
+      <p>Everything runs in your browser. No app to download, no account required. Just open and play instantly.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:32px">
+    <p style="color:var(--muted);margin-bottom:16px;font-size:0.92rem">Ready to challenge your brain?</p>
+    <a class="btn-primary" href="index.html">🎮 Play Now — It's Free!</a>
+  </div>
+</div>
+<footer>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 PuzzleVerse. All rights reserved.</div>
+</footer>
+</body>
+</html>
