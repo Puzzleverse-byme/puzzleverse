@@ -2,24 +2,69 @@
   "name": "PuzzleVerse - Brain Games",
   "short_name": "PuzzleVerse",
   "description": "8 free brain puzzle games - Sudoku, Memory, Math Storm and more!",
+  "id": "/index.html",
   "start_url": "/index.html",
+  "scope": "/",
+  "dir": "ltr",
+  "lang": "en",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "browser"],
   "background_color": "#07070F",
   "theme_color": "#7C3AED",
   "orientation": "portrait",
+  "prefer_related_applications": false,
+  "categories": ["games", "entertainment", "education"],
+  "screenshots": [],
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "categories": ["games", "entertainment", "education"],
-  "screenshots": [],
-  "lang": "en"
-}						
+  "shortcuts": [
+    {
+      "name": "Flip & Match",
+      "short_name": "Memory",
+      "description": "Play the memory card flip game",
+      "url": "/memory-game.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Sudoku Master",
+      "short_name": "Sudoku",
+      "description": "Play Sudoku puzzles",
+      "url": "/sudoku.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Word Scramble",
+      "short_name": "Word Scramble",
+      "description": "Unscramble the words",
+      "url": "/word-scramble.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}
